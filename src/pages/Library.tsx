@@ -6,6 +6,8 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { BookOpen, Search, Filter, Volume2, Map, Layers, Download, Play, Eye, Brain, Heart, Zap, Users } from 'lucide-react';
+import { AudioDescription } from '@/components/AudioDescription';
+import { AccessibleButton } from '@/components/AccessibleButton';
 
 const Library = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -155,9 +157,13 @@ const Library = () => {
         <div className="container mx-auto px-4">
           <div className="text-center">
             <BookOpen className="h-16 w-16 mx-auto mb-6 text-white/90" aria-hidden="true" />
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4" tabIndex={-1}>
               Resource Library
             </h1>
+            <AudioDescription 
+              text="Welcome to the Resource Library. This is your complete collection of accessible neuroscience resources, organized by topic, difficulty, and learning style for comprehensive education."
+              className="mb-4"
+            />
             <p className="text-xl text-white/90 max-w-2xl mx-auto">
               Complete collection of accessible neuroscience resources organized by topic, 
               difficulty, and learning style for comprehensive education
@@ -326,21 +332,41 @@ const Library = () => {
                         {/* Action Buttons */}
                         <div className="flex gap-2">
                           {resource.type === 'audio-lesson' && (
-                            <Button size="sm" variant="outline" className="flex-1">
+                            <AccessibleButton 
+                              size="sm" 
+                              variant="outline" 
+                              className="flex-1"
+                              hapticFeedback="light"
+                              announcement={`Playing ${resource.title}`}
+                              aria-label={`Play ${resource.title} audio lesson`}
+                            >
                               <Play className="h-4 w-4 mr-1" />
                               Play
-                            </Button>
+                            </AccessibleButton>
                           )}
                           {resource.type === 'sonified-map' && (
-                            <Button size="sm" variant="outline" className="flex-1">
+                            <AccessibleButton 
+                              size="sm" 
+                              variant="outline" 
+                              className="flex-1"
+                              hapticFeedback="light"
+                              announcement={`Exploring ${resource.title} map`}
+                              aria-label={`Explore ${resource.title} interactive map`}
+                            >
                               <Map className="h-4 w-4 mr-1" />
                               Explore
-                            </Button>
+                            </AccessibleButton>
                           )}
-                          <Button size="sm" className="flex-1">
+                          <AccessibleButton 
+                            size="sm" 
+                            className="flex-1"
+                            hapticFeedback="medium"
+                            announcement={`Downloading ${resource.title}`}
+                            aria-label={`Download ${resource.title} resource`}
+                          >
                             <Download className="h-4 w-4 mr-1" />
                             Get
-                          </Button>
+                          </AccessibleButton>
                         </div>
                       </div>
                     </CardContent>

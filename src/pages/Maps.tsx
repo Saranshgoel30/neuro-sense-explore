@@ -4,10 +4,14 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Map, Volume2, Navigation, Brain, Eye, Zap, Layers, ArrowUp, ArrowDown, ArrowLeft, ArrowRight } from 'lucide-react';
+import { AudioDescription } from '@/components/AudioDescription';
+import { AccessibleButton } from '@/components/AccessibleButton';
+import { useAccessibilityContext } from '@/components/AccessibilityProvider';
 
 const Maps = () => {
   const [selectedMap, setSelectedMap] = useState<number | null>(null);
   const [selectedRegion, setSelectedRegion] = useState<string | null>(null);
+  const { triggerHapticFeedback, announceToScreenReader } = useAccessibilityContext();
 
   const brainMaps = [
     {
@@ -47,6 +51,8 @@ const Maps = () => {
   const playTone = (frequency: number, duration: number = 500) => {
     // Audio feedback simulation - in real implementation would use Web Audio API
     console.log(`Playing tone: ${frequency}Hz for ${duration}ms`);
+    triggerHapticFeedback('light');
+    announceToScreenReader(`Playing tone at ${frequency} hertz`, 'polite');
     // This would trigger actual audio feedback
   };
 
@@ -57,9 +63,13 @@ const Maps = () => {
         <div className="container mx-auto px-4">
           <div className="text-center">
             <Map className="h-16 w-16 mx-auto mb-6 text-white/90" aria-hidden="true" />
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4" tabIndex={-1}>
               Interactive Sonified Maps
             </h1>
+            <AudioDescription 
+              text="Welcome to Interactive Sonified Maps. These keyboard-navigable brain diagrams use sound to represent neural activity and anatomical structures. Each region produces distinct tones to help you explore brain anatomy through audio."
+              className="mb-4"
+            />
             <p className="text-xl text-white/90 max-w-2xl mx-auto">
               Keyboard-navigable brain diagrams with sonification where pitch changes 
               denote neural activation levels and anatomical structures
@@ -177,12 +187,15 @@ const Maps = () => {
                         Base frequency: {map.baseFrequency}Hz
                       </div>
                     </div>
-                    <Button 
+                    <AccessibleButton 
                       className="w-full"
                       variant={selectedMap === map.id ? "default" : "outline"}
+                      hapticFeedback="medium"
+                      announcement={selectedMap === map.id ? `${map.title} map deselected` : `${map.title} map selected`}
+                      aria-label={`${selectedMap === map.id ? "Deselect" : "Select"} ${map.title} interactive map`}
                     >
                       {selectedMap === map.id ? "Selected" : "Select Map"}
-                    </Button>
+                    </AccessibleButton>
                   </div>
                 </CardContent>
               </Card>

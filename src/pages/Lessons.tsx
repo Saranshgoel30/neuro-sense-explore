@@ -4,6 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Volume2, Play, Clock, Brain, Eye, Zap, Heart, Users } from 'lucide-react';
+import { AudioDescription } from '@/components/AudioDescription';
+import { AccessibleButton } from '@/components/AccessibleButton';
 
 const Lessons = () => {
   const lessons = [
@@ -75,9 +77,13 @@ const Lessons = () => {
         <div className="container mx-auto px-4">
           <div className="text-center">
             <Volume2 className="h-16 w-16 mx-auto mb-6 text-white/90" aria-hidden="true" />
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4" tabIndex={-1}>
               Audio Lessons
             </h1>
+            <AudioDescription 
+              text="Welcome to Audio Lessons. These podcast-style neuroscience modules use rich auditory storytelling and non-visual analogies to make complex concepts accessible for blind and low-vision learners."
+              className="mb-4"
+            />
             <p className="text-xl text-white/90 max-w-2xl mx-auto">
               Podcast-style neuroscience modules using rich auditory storytelling 
               and non-visual analogies to make complex concepts accessible
@@ -192,14 +198,16 @@ const Lessons = () => {
                     </div>
 
                     {/* Action Button */}
-                    <Button 
+                    <AccessibleButton 
                       className="w-full group-hover:bg-primary group-hover:text-primary-foreground"
                       variant="outline"
-                      aria-label={`Start lesson: ${lesson.title}`}
+                      aria-label={`Start lesson: ${lesson.title} - ${lesson.duration}`}
+                      hapticFeedback="medium"
+                      announcement={`Starting ${lesson.title} lesson`}
                     >
                       <Play className="mr-2 h-4 w-4" aria-hidden="true" />
                       Start Lesson
-                    </Button>
+                    </AccessibleButton>
                   </div>
                 </CardContent>
               </Card>

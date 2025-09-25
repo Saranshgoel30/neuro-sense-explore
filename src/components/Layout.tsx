@@ -1,15 +1,33 @@
 import React from 'react';
 import Navigation from '@/components/ui/navigation';
+import { useAccessibilityContext } from '@/components/AccessibilityProvider';
 
 interface LayoutProps {
   children: React.ReactNode;
 }
 
 const Layout = ({ children }: LayoutProps) => {
+  const { announceToScreenReader } = useAccessibilityContext();
+
+  React.useEffect(() => {
+    // Announce page load completion
+    const timer = setTimeout(() => {
+      announceToScreenReader('Page loaded successfully', 'polite');
+    }, 500);
+    
+    return () => clearTimeout(timer);
+  }, [announceToScreenReader]);
+
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
-      <main role="main" className="flex-1">
+      <main 
+        id="main-content"
+        role="main" 
+        className="flex-1"
+        tabIndex={-1}
+        aria-label="Main content"
+      >
         {children}
       </main>
       <footer className="bg-muted mt-auto py-8">

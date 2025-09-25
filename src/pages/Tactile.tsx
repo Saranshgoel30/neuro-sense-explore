@@ -5,6 +5,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Layers, Download, Volume2, FileText, Brain, Zap, Heart, Eye, Printer, Package } from 'lucide-react';
+import { AudioDescription } from '@/components/AudioDescription';
+import { AccessibleButton } from '@/components/AccessibleButton';
 
 const Tactile = () => {
   const [selectedCategory, setSelectedCategory] = useState("brain-anatomy");
@@ -141,9 +143,13 @@ const Tactile = () => {
         <div className="container mx-auto px-4">
           <div className="text-center">
             <Layers className="h-16 w-16 mx-auto mb-6 text-white/90" aria-hidden="true" />
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4" tabIndex={-1}>
               Tactile Hub
             </h1>
+            <AudioDescription 
+              text="Welcome to the Tactile Hub. Here you'll find downloadable 3D-printable models of brain regions, neurons, and lab tools with comprehensive audio instructions for tactile learning and exploration."
+              className="mb-4"
+            />
             <p className="text-xl text-white/90 max-w-2xl mx-auto">
               Downloadable 3D-printable models of brain regions, neurons, and lab tools 
               with step-by-step audio instructions for tactile learning
@@ -306,10 +312,15 @@ const Tactile = () => {
                           </div>
 
                           {/* Download Button */}
-                          <Button className="w-full" aria-label={`Download ${model.title} files and audio guide`}>
+                          <AccessibleButton 
+                            className="w-full" 
+                            aria-label={`Download ${model.title} files and audio guide`}
+                            hapticFeedback="medium"
+                            announcement={`Downloading ${model.title} package`}
+                          >
                             <Download className="mr-2 h-4 w-4" />
                             Download Package
-                          </Button>
+                          </AccessibleButton>
                         </div>
                       </CardContent>
                     </Card>

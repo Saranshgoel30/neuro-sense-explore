@@ -4,8 +4,16 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Volume2, Map, Layers, BookOpen, Accessibility, Brain, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useAccessibilityContext } from '@/components/AccessibilityProvider';
 
 const Index = () => {
+  const { triggerHapticFeedback, announceToScreenReader } = useAccessibilityContext();
+
+  const handleFeatureClick = (featureName: string) => {
+    triggerHapticFeedback('light');
+    announceToScreenReader(`Exploring ${featureName}`, 'polite');
+  };
+
   const features = [
     {
       icon: Volume2,
@@ -55,21 +63,42 @@ const Index = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Link to="/lessons">
-                <Button size="lg" variant="secondary" className="text-lg px-8 py-4">
+                <Button 
+                  size="lg" 
+                  variant="secondary" 
+                  className="text-lg px-8 py-4"
+                  onClick={() => handleFeatureClick('Audio Lessons')}
+                  aria-describedby="start-learning-desc"
+                >
                   <Volume2 className="mr-2 h-5 w-5" aria-hidden="true" />
                   Start Learning
                   <ArrowRight className="ml-2 h-5 w-5" aria-hidden="true" />
                 </Button>
               </Link>
+              <span id="start-learning-desc" className="sr-only">
+                Navigate to audio lessons page with podcast-style neuroscience modules
+              </span>
               <Button 
                 size="lg" 
                 variant="outline" 
                 className="text-lg px-8 py-4 bg-white/10 border-white text-white hover:bg-white hover:text-primary"
-                onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
+                onClick={() => {
+                  triggerHapticFeedback('medium');
+                  announceToScreenReader('Scrolling to features section', 'polite');
+                  document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' });
+                  // Focus the features section for keyboard users
+                  setTimeout(() => {
+                    document.getElementById('features-heading')?.focus();
+                  }, 500);
+                }}
+                aria-describedby="explore-features-desc"
               >
                 <Accessibility className="mr-2 h-5 w-5" aria-hidden="true" />
                 Explore Features
               </Button>
+              <span id="explore-features-desc" className="sr-only">
+                Scroll down to view detailed information about all accessibility features
+              </span>
             </div>
           </div>
         </div>
@@ -108,10 +137,15 @@ const Index = () => {
       <section id="features" className="py-20" aria-labelledby="features-heading">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 id="features-heading" className="text-4xl font-bold mb-4">
+            <h2 
+              id="features-heading" 
+              className="text-4xl font-bold mb-4"
+              tabIndex={-1}
+              aria-describedby="features-description"
+            >
               Inclusive Learning Features
             </h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            <p id="features-description" className="text-xl text-muted-foreground max-w-2xl mx-auto">
               Experience neuroscience through multiple senses with our comprehensive 
               accessibility-first approach
             </p>
@@ -140,11 +174,19 @@ const Index = () => {
                     </p>
                   </div>
                   <Link to={feature.href}>
-                    <Button className="w-full" variant="outline">
+                    <Button 
+                      className="w-full" 
+                      variant="outline"
+                      onClick={() => handleFeatureClick(feature.title)}
+                      aria-describedby={`feature-${feature.title.toLowerCase().replace(/\s+/g, '-')}-desc`}
+                    >
                       Explore {feature.title}
                       <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
                     </Button>
                   </Link>
+                  <span id={`feature-${feature.title.toLowerCase().replace(/\s+/g, '-')}-desc`} className="sr-only">
+                    {feature.description}
+                  </span>
                 </CardContent>
               </Card>
             ))}
