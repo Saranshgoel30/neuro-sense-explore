@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import Layout from '@/components/Layout';
-import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Layers, Download, Volume2, FileText, Brain, Zap, Heart, Eye, Printer, Package } from 'lucide-react';
+import { Boxes, Download, FileText, Headphones, Printer } from 'lucide-react';
 import { AudioDescription } from '@/components/AudioDescription';
 import { AccessibleButton } from '@/components/AccessibleButton';
 
@@ -15,28 +14,24 @@ const Tactile = () => {
     {
       id: "brain-anatomy",
       title: "Brain Anatomy",
-      icon: Brain,
       description: "3D models of brain regions and structures",
       count: 12
     },
     {
       id: "neurons",
       title: "Neurons & Cells",
-      icon: Zap,
       description: "Individual neural cells and their components",
       count: 8
     },
     {
       id: "lab-tools",
       title: "Lab Equipment",
-      icon: Package,
       description: "Research instruments and experimental setups",
       count: 6
     },
     {
       id: "pathways",
       title: "Neural Pathways",
-      icon: Eye,
       description: "Connected brain circuits and signal flows",
       count: 10
     }
@@ -129,9 +124,9 @@ const Tactile = () => {
 
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
-      case 'Beginner': return 'bg-success text-white';
-      case 'Intermediate': return 'bg-warning text-white';
-      case 'Advanced': return 'bg-destructive text-white';
+      case 'Beginner': return 'bg-success text-success-foreground';
+      case 'Intermediate': return 'bg-warning text-warning-foreground';
+      case 'Advanced': return 'bg-destructive text-destructive-foreground';
       default: return 'bg-muted';
     }
   };
@@ -139,10 +134,13 @@ const Tactile = () => {
   return (
     <Layout>
       {/* Header */}
-      <section className="py-16 bg-gradient-secondary text-white">
+      <section className="py-16 bg-gradient-secondary text-primary-foreground">
         <div className="container mx-auto px-4">
           <div className="text-center">
-            <Layers className="h-16 w-16 mx-auto mb-6 text-white/90" aria-hidden="true" />
+            <div className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/30 bg-primary-foreground/10 px-4 py-2 mb-6 text-sm">
+              <Boxes className="h-4 w-4" aria-hidden="true" />
+              3D tactile learning resources
+            </div>
             <h1 className="text-4xl md:text-5xl font-bold mb-4" tabIndex={-1}>
               Tactile Hub
             </h1>
@@ -150,7 +148,7 @@ const Tactile = () => {
               text="Welcome to the Tactile Hub. Here you'll find downloadable 3D-printable models of brain regions, neurons, and lab tools with comprehensive audio instructions for tactile learning and exploration."
               className="mb-4"
             />
-            <p className="text-xl text-white/90 max-w-2xl mx-auto">
+            <p className="text-xl text-primary-foreground/90 max-w-2xl mx-auto">
               Downloadable 3D-printable models of brain regions, neurons, and lab tools 
               with step-by-step audio instructions for tactile learning
             </p>
@@ -166,9 +164,7 @@ const Tactile = () => {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <div className="flex items-start space-x-3">
-              <div className="bg-primary text-primary-foreground rounded-full p-2">
-                <Download className="h-5 w-5" />
-              </div>
+              <div className="bg-primary text-primary-foreground rounded-full px-3 py-2 font-semibold"><Download className="h-4 w-4" aria-hidden="true" /></div>
               <div>
                 <h3 className="font-semibold">Download</h3>
                 <p className="text-sm text-muted-foreground">
@@ -177,9 +173,7 @@ const Tactile = () => {
               </div>
             </div>
             <div className="flex items-start space-x-3">
-              <div className="bg-primary text-primary-foreground rounded-full p-2">
-                <Printer className="h-5 w-5" />
-              </div>
+              <div className="bg-primary text-primary-foreground rounded-full px-3 py-2 font-semibold"><Printer className="h-4 w-4" aria-hidden="true" /></div>
               <div>
                 <h3 className="font-semibold">Print</h3>
                 <p className="text-sm text-muted-foreground">
@@ -188,9 +182,7 @@ const Tactile = () => {
               </div>
             </div>
             <div className="flex items-start space-x-3">
-              <div className="bg-primary text-primary-foreground rounded-full p-2">
-                <Volume2 className="h-5 w-5" />
-              </div>
+              <div className="bg-primary text-primary-foreground rounded-full px-3 py-2 font-semibold"><Headphones className="h-4 w-4" aria-hidden="true" /></div>
               <div>
                 <h3 className="font-semibold">Listen</h3>
                 <p className="text-sm text-muted-foreground">
@@ -199,9 +191,7 @@ const Tactile = () => {
               </div>
             </div>
             <div className="flex items-start space-x-3">
-              <div className="bg-primary text-primary-foreground rounded-full p-2">
-                <Brain className="h-5 w-5" />
-              </div>
+              <div className="bg-primary text-primary-foreground rounded-full px-3 py-2 font-semibold"><Boxes className="h-4 w-4" aria-hidden="true" /></div>
               <div>
                 <h3 className="font-semibold">Explore</h3>
                 <p className="text-sm text-muted-foreground">
@@ -226,9 +216,8 @@ const Tactile = () => {
                 <TabsTrigger 
                   key={category.id} 
                   value={category.id}
-                  className="flex items-center space-x-2"
+                  className="flex items-center justify-center"
                 >
-                  <category.icon className="h-4 w-4" />
                   <span>{category.title}</span>
                 </TabsTrigger>
               ))}
@@ -240,7 +229,6 @@ const Tactile = () => {
                   <Card>
                     <CardHeader>
                       <CardTitle className="flex items-center">
-                        <category.icon className="h-6 w-6 mr-2" />
                         {category.title}
                         <Badge variant="secondary" className="ml-2">
                           {category.count} models
@@ -258,7 +246,7 @@ const Tactile = () => {
                   {getCurrentModels().map((model, index) => (
                     <Card 
                       key={model.id} 
-                      className="hover:shadow-medium transition-all duration-300 animate-fade-in-up"
+                      className="card-modern transition-all duration-200 hover:-translate-y-1 hover:shadow-medium border-2"
                       style={{ animationDelay: `${index * 0.1}s` }}
                     >
                       <CardHeader>
@@ -266,10 +254,7 @@ const Tactile = () => {
                           <Badge className={getDifficultyColor(model.difficulty)}>
                             {model.difficulty}
                           </Badge>
-                          <div className="flex items-center text-sm text-muted-foreground">
-                            <Printer className="h-4 w-4 mr-1" />
-                            {model.printTime}
-                          </div>
+                          <div className="text-sm text-muted-foreground">{model.printTime}</div>
                         </div>
                         <CardTitle className="text-xl">
                           {model.title}
@@ -285,19 +270,13 @@ const Tactile = () => {
                             <h4 className="font-semibold mb-2">Files:</h4>
                             <div className="space-y-1">
                               {model.files.map((file) => (
-                                <div key={file} className="flex items-center text-sm text-muted-foreground">
-                                  <FileText className="h-4 w-4 mr-2" />
-                                  {file}
-                                </div>
+                                <div key={file} className="text-sm text-muted-foreground flex items-center gap-2"><FileText className="h-3.5 w-3.5" aria-hidden="true" />{file}</div>
                               ))}
                             </div>
                           </div>
 
                           {/* Audio Guide */}
-                          <div className="flex items-center text-sm">
-                            <Volume2 className="h-4 w-4 mr-2 text-primary" />
-                            <span>Audio guide: {model.audioGuide}</span>
-                          </div>
+                          <div className="text-sm">Audio guide: {model.audioGuide}</div>
 
                           {/* Tags */}
                           <div>
@@ -318,7 +297,7 @@ const Tactile = () => {
                             hapticFeedback="medium"
                             announcement={`Downloading ${model.title} package`}
                           >
-                            <Download className="mr-2 h-4 w-4" />
+                            <Download className="h-4 w-4" aria-hidden="true" />
                             Download Package
                           </AccessibleButton>
                         </div>
@@ -342,10 +321,7 @@ const Tactile = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <Card>
                 <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <Printer className="h-6 w-6 mr-2" />
-                    Technical Specifications
-                  </CardTitle>
+                  <CardTitle>Technical Specifications</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
                   <div>
@@ -368,10 +344,7 @@ const Tactile = () => {
 
               <Card>
                 <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <Volume2 className="h-6 w-6 mr-2" />
-                    Audio Guide Features
-                  </CardTitle>
+                  <CardTitle>Audio Guide Features</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
                   <div>

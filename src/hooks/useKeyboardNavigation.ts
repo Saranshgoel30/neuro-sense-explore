@@ -5,13 +5,13 @@ export const useKeyboardNavigation = () => {
     let isKeyboardUser = false;
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Tab') {
+      if (e.key === 'Tab' || e.key.startsWith('Arrow')) {
         isKeyboardUser = true;
         document.body.classList.add('keyboard-user');
       }
     };
 
-    const handleMouseDown = () => {
+    const handlePointerInput = () => {
       isKeyboardUser = false;
       document.body.classList.remove('keyboard-user');
     };
@@ -29,13 +29,17 @@ export const useKeyboardNavigation = () => {
     };
 
     document.addEventListener('keydown', handleKeyDown);
-    document.addEventListener('mousedown', handleMouseDown);
+    document.addEventListener('mousedown', handlePointerInput);
+    document.addEventListener('touchstart', handlePointerInput, { passive: true });
+    document.addEventListener('pointerdown', handlePointerInput);
     document.addEventListener('focusin', handleFocusVisible);
     document.addEventListener('focusout', handleBlur);
 
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
-      document.removeEventListener('mousedown', handleMouseDown);
+      document.removeEventListener('mousedown', handlePointerInput);
+      document.removeEventListener('touchstart', handlePointerInput);
+      document.removeEventListener('pointerdown', handlePointerInput);
       document.removeEventListener('focusin', handleFocusVisible);
       document.removeEventListener('focusout', handleBlur);
     };
