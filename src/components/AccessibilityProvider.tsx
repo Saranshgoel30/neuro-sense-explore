@@ -32,7 +32,9 @@ export const AccessibilityProvider: React.FC<AccessibilityProviderProps> = ({ ch
 
   // Add skip links on mount
   useEffect(() => {
-    const skipLinksContainer = document.createElement('div');
+    const skipLinksContainer = document.createElement('nav');
+    skipLinksContainer.setAttribute('aria-label', 'Skip links');
+    skipLinksContainer.id = 'skip-links';
     skipLinksContainer.className = 'skip-links';
     
     const skipToMain = accessibility.createSkipLink('main-content', 'Skip to main content');
@@ -41,7 +43,9 @@ export const AccessibilityProvider: React.FC<AccessibilityProviderProps> = ({ ch
     skipLinksContainer.appendChild(skipToMain);
     skipLinksContainer.appendChild(skipToNav);
     
-    document.body.insertBefore(skipLinksContainer, document.body.firstChild);
+    if (!document.getElementById('skip-links')) {
+      document.body.insertBefore(skipLinksContainer, document.body.firstChild);
+    }
     
     return () => {
       if (document.body.contains(skipLinksContainer)) {
@@ -52,16 +56,31 @@ export const AccessibilityProvider: React.FC<AccessibilityProviderProps> = ({ ch
 
   // Add live region for announcements
   useEffect(() => {
-    const liveRegion = document.createElement('div');
-    liveRegion.id = 'live-region';
-    liveRegion.setAttribute('aria-live', 'polite');
-    liveRegion.setAttribute('aria-atomic', 'true');
-    liveRegion.className = 'sr-only';
-    document.body.appendChild(liveRegion);
+    const politeRegion = document.createElement('div');
+    politeRegion.id = 'live-region-polite';
+    politeRegion.setAttribute('aria-live', 'polite');
+    politeRegion.setAttribute('aria-atomic', 'true');
+    politeRegion.className = 'sr-only';
+
+    const assertiveRegion = document.createElement('div');
+    assertiveRegion.id = 'live-region-assertive';
+    assertiveRegion.setAttribute('aria-live', 'assertive');
+    assertiveRegion.setAttribute('aria-atomic', 'true');
+    assertiveRegion.className = 'sr-only';
+
+    if (!document.getElementById('live-region-polite')) {
+      document.body.appendChild(politeRegion);
+    }
+    if (!document.getElementById('live-region-assertive')) {
+      document.body.appendChild(assertiveRegion);
+    }
     
     return () => {
-      if (document.body.contains(liveRegion)) {
-        document.body.removeChild(liveRegion);
+      if (document.body.contains(politeRegion)) {
+        document.body.removeChild(politeRegion);
+      }
+      if (document.body.contains(assertiveRegion)) {
+        document.body.removeChild(assertiveRegion);
       }
     };
   }, []);

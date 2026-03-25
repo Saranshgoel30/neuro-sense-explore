@@ -2,7 +2,7 @@ import React from 'react';
 import Layout from '@/components/Layout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Volume2, Map, Layers, BookOpen, Accessibility, Brain, ArrowRight } from 'lucide-react';
+import { ArrowRight, BookOpen, BrainCircuit, Layers, Map, Sparkles, Volume2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useAccessibilityContext } from '@/components/AccessibilityProvider';
 
@@ -16,29 +16,29 @@ const Index = () => {
 
   const features = [
     {
-      icon: Volume2,
       title: 'Audio Lessons',
+      icon: Volume2,
       description: 'Podcast-style modules using rich auditory storytelling and non-visual analogies',
       href: '/lessons',
       example: '"The Brain and Memory", "The Visual System Beyond Vision"'
     },
     {
-      icon: Map,
       title: 'Sonified Maps',
+      icon: Map,
       description: 'Interactive keyboard-navigable diagrams with pitch changes denoting neural activity',
       href: '/maps',
       example: 'Navigate brain regions with distinct tones and audio cues'
     },
     {
-      icon: Layers,
       title: 'Tactile Hub',
+      icon: Layers,
       description: 'Downloadable 3D-printable models of brain regions, neurons, and lab tools',
       href: '/tactile',
       example: 'STL/OBJ files with step-by-step audio instructions'
     },
     {
-      icon: BookOpen,
       title: 'Complete Library',
+      icon: BookOpen,
       description: 'Full collection of accessible neuroscience resources and materials',
       href: '/library',
       example: 'Organized by topic, difficulty, and learning style'
@@ -48,40 +48,47 @@ const Index = () => {
   return (
     <Layout>
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-hero py-24" role="banner">
+      <section className="relative overflow-hidden bg-gradient-hero py-24 text-primary-foreground" role="banner">
         <div className="container mx-auto px-4 text-center">
-          <div className="animate-fade-in-up">
-            <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
-              NewroView
-              <span className="block text-2xl md:text-3xl font-normal mt-2 text-white/90">
+          <div>
+            <div className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/30 bg-primary-foreground/10 px-4 py-2 mb-6 text-sm">
+              <Sparkles className="h-4 w-4" aria-hidden="true" />
+              Designed for accessible learning
+            </div>
+            <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+              Neuro Sense Explore
+              <span className="block text-2xl md:text-3xl font-normal mt-2 text-primary-foreground/90">
                 Accessible Neuroscience Education
               </span>
             </h1>
-            <p className="text-xl md:text-2xl text-white/90 mb-8 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-xl md:text-2xl text-primary-foreground/90 mb-8 max-w-3xl mx-auto leading-relaxed">
               A multilingual, digitally accessible platform for neuroscience education 
               tailored specifically for blind and low-vision learners
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <Link to="/lessons">
-                <Button 
-                  size="lg" 
-                  variant="secondary" 
-                  className="text-lg px-8 py-4"
+              <Button
+                asChild
+                size="lg"
+                variant="secondary"
+                className="text-lg px-8 py-4"
+              >
+                <Link
+                  to="/lessons"
                   onClick={() => handleFeatureClick('Audio Lessons')}
                   aria-describedby="start-learning-desc"
                 >
-                  <Volume2 className="mr-2 h-5 w-5" aria-hidden="true" />
+                  <Volume2 className="h-5 w-5" aria-hidden="true" />
                   Start Learning
-                  <ArrowRight className="ml-2 h-5 w-5" aria-hidden="true" />
-                </Button>
-              </Link>
+                  <ArrowRight className="h-5 w-5" aria-hidden="true" />
+                </Link>
+              </Button>
               <span id="start-learning-desc" className="sr-only">
                 Navigate to audio lessons page with podcast-style neuroscience modules
               </span>
               <Button 
                 size="lg" 
                 variant="outline" 
-                className="text-lg px-8 py-4 bg-white/10 border-white text-white hover:bg-white hover:text-primary"
+                className="text-lg px-8 py-4 bg-primary-foreground/10 border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary"
                 onClick={() => {
                   triggerHapticFeedback('medium');
                   announceToScreenReader('Scrolling to features section', 'polite');
@@ -93,7 +100,7 @@ const Index = () => {
                 }}
                 aria-describedby="explore-features-desc"
               >
-                <Accessibility className="mr-2 h-5 w-5" aria-hidden="true" />
+                <BrainCircuit className="h-5 w-5" aria-hidden="true" />
                 Explore Features
               </Button>
               <span id="explore-features-desc" className="sr-only">
@@ -103,8 +110,7 @@ const Index = () => {
           </div>
         </div>
         {/* Accessibility indicator */}
-        <div className="absolute bottom-4 right-4 text-white/70 text-sm">
-          <Accessibility className="inline h-4 w-4 mr-1" aria-hidden="true" />
+        <div className="absolute bottom-4 right-4 text-primary-foreground/80 text-sm">
           WCAG 2.1 AA Compliant
         </div>
       </section>
@@ -114,19 +120,16 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <h2 id="stats-heading" className="sr-only">Platform Statistics</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-            <div className="animate-fade-in-up">
-              <Brain className="h-12 w-12 text-primary mx-auto mb-4" aria-hidden="true" />
+            <div>
               <div className="text-3xl font-bold text-primary mb-2">100%</div>
               <p className="text-muted-foreground">Keyboard Navigable</p>
             </div>
-            <div className="animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
-              <Volume2 className="h-12 w-12 text-secondary mx-auto mb-4" aria-hidden="true" />
-              <div className="text-3xl font-bold text-secondary mb-2">Audio-First</div>
+            <div>
+              <div className="text-3xl font-bold text-primary mb-2">Audio-First</div>
               <p className="text-muted-foreground">Design Approach</p>
             </div>
-            <div className="animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-              <Layers className="h-12 w-12 text-accent mx-auto mb-4" aria-hidden="true" />
-              <div className="text-3xl font-bold text-accent mb-2">Multi-Modal</div>
+            <div>
+              <div className="text-3xl font-bold text-primary mb-2">Multi-Modal</div>
               <p className="text-muted-foreground">Learning Experience</p>
             </div>
           </div>
@@ -155,14 +158,14 @@ const Index = () => {
             {features.map((feature, index) => (
               <Card 
                 key={feature.title} 
-                className="hover:shadow-medium transition-all duration-300 animate-fade-in-up" 
+                className="card-modern transition-all duration-200 hover:-translate-y-1 hover:shadow-medium border-2" 
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 <CardHeader>
-                  <div className="flex items-center space-x-3 mb-2">
-                    <feature.icon className="h-8 w-8 text-primary" aria-hidden="true" />
-                    <CardTitle className="text-2xl">{feature.title}</CardTitle>
-                  </div>
+                  <CardTitle className="text-2xl flex items-center gap-2">
+                    <feature.icon className="h-6 w-6 text-primary" aria-hidden="true" />
+                    {feature.title}
+                  </CardTitle>
                   <CardDescription className="text-lg">
                     {feature.description}
                   </CardDescription>
@@ -173,17 +176,16 @@ const Index = () => {
                       Example: {feature.example}
                     </p>
                   </div>
-                  <Link to={feature.href}>
-                    <Button 
-                      className="w-full" 
-                      variant="outline"
+                  <Button asChild className="w-full" variant="outline">
+                    <Link
+                      to={feature.href}
                       onClick={() => handleFeatureClick(feature.title)}
                       aria-describedby={`feature-${feature.title.toLowerCase().replace(/\s+/g, '-')}-desc`}
                     >
                       Explore {feature.title}
-                      <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
-                    </Button>
-                  </Link>
+                      <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                    </Link>
+                  </Button>
                   <span id={`feature-${feature.title.toLowerCase().replace(/\s+/g, '-')}-desc`} className="sr-only">
                     {feature.description}
                   </span>
@@ -202,36 +204,24 @@ const Index = () => {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             <div className="flex flex-col items-center">
-              <div className="bg-white/20 p-3 rounded-full mb-3">
-                <Accessibility className="h-6 w-6" aria-hidden="true" />
-              </div>
               <h3 className="font-semibold mb-2">Screen Reader Support</h3>
               <p className="text-primary-foreground/90 text-sm">
                 Full compatibility with all major screen readers
               </p>
             </div>
             <div className="flex flex-col items-center">
-              <div className="bg-white/20 p-3 rounded-full mb-3">
-                <Volume2 className="h-6 w-6" aria-hidden="true" />
-              </div>
               <h3 className="font-semibold mb-2">Audio Descriptions</h3>
               <p className="text-primary-foreground/90 text-sm">
                 Rich audio content for all visual elements
               </p>
             </div>
             <div className="flex flex-col items-center">
-              <div className="bg-white/20 p-3 rounded-full mb-3">
-                <Map className="h-6 w-6" aria-hidden="true" />
-              </div>
               <h3 className="font-semibold mb-2">Haptic Feedback</h3>
               <p className="text-primary-foreground/90 text-sm">
                 Device vibrations for enhanced interaction
               </p>
             </div>
             <div className="flex flex-col items-center">
-              <div className="bg-white/20 p-3 rounded-full mb-3">
-                <Brain className="h-6 w-6" aria-hidden="true" />
-              </div>
               <h3 className="font-semibold mb-2">High Contrast</h3>
               <p className="text-primary-foreground/90 text-sm">
                 Toggle mode for enhanced visibility
@@ -239,7 +229,7 @@ const Index = () => {
             </div>
           </div>
           <p className="text-lg text-primary-foreground/90">
-            Press <kbd className="bg-white/20 px-2 py-1 rounded text-sm">Ctrl+Alt+C</kbd> 
+            Press <kbd className="bg-primary-foreground/20 px-2 py-1 rounded text-sm">Ctrl+Alt+C</kbd> 
             {" "}to toggle high contrast mode
           </p>
         </div>

@@ -3,7 +3,7 @@ import Layout from '@/components/Layout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Map, Volume2, Navigation, Brain, Eye, Zap, Layers, ArrowUp, ArrowDown, ArrowLeft, ArrowRight } from 'lucide-react';
+import { Compass, Layers, Volume2 } from 'lucide-react';
 import { AudioDescription } from '@/components/AudioDescription';
 import { AccessibleButton } from '@/components/AccessibleButton';
 import { useAccessibilityContext } from '@/components/AccessibilityProvider';
@@ -20,7 +20,6 @@ const Maps = () => {
       description: "Navigate from retina to visual cortex with distinct audio tones",
       regions: ["Retina", "LGN", "V1", "V2", "V4", "IT Cortex"],
       baseFrequency: 220,
-      icon: Eye,
       complexity: "Beginner"
     },
     {
@@ -29,7 +28,6 @@ const Maps = () => {
       description: "Explore hippocampal-cortical memory networks through sound",
       regions: ["Hippocampus", "Entorhinal Cortex", "Prefrontal Cortex", "Temporal Lobe"],
       baseFrequency: 440,
-      icon: Brain,
       complexity: "Intermediate"
     },
     {
@@ -38,7 +36,6 @@ const Maps = () => {
       description: "Experience complex neural connections through multi-layered audio",
       regions: ["Input Layer", "Hidden Layer 1", "Hidden Layer 2", "Output Layer"],
       baseFrequency: 330,
-      icon: Zap,
       complexity: "Advanced"
     }
   ];
@@ -49,20 +46,21 @@ const Maps = () => {
   };
 
   const playTone = (frequency: number, duration: number = 500) => {
-    // Audio feedback simulation - in real implementation would use Web Audio API
-    console.log(`Playing tone: ${frequency}Hz for ${duration}ms`);
+    void duration;
     triggerHapticFeedback('light');
     announceToScreenReader(`Playing tone at ${frequency} hertz`, 'polite');
-    // This would trigger actual audio feedback
   };
 
   return (
     <Layout>
       {/* Header */}
-      <section className="py-16 bg-gradient-primary text-white">
+      <section className="py-16 bg-gradient-primary text-primary-foreground">
         <div className="container mx-auto px-4">
           <div className="text-center">
-            <Map className="h-16 w-16 mx-auto mb-6 text-white/90" aria-hidden="true" />
+            <div className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/30 bg-primary-foreground/10 px-4 py-2 mb-6 text-sm">
+              <Compass className="h-4 w-4" aria-hidden="true" />
+              Spatial audio navigation
+            </div>
             <h1 className="text-4xl md:text-5xl font-bold mb-4" tabIndex={-1}>
               Interactive Sonified Maps
             </h1>
@@ -70,7 +68,7 @@ const Maps = () => {
               text="Welcome to Interactive Sonified Maps. These keyboard-navigable brain diagrams use sound to represent neural activity and anatomical structures. Each region produces distinct tones to help you explore brain anatomy through audio."
               className="mb-4"
             />
-            <p className="text-xl text-white/90 max-w-2xl mx-auto">
+            <p className="text-xl text-primary-foreground/90 max-w-2xl mx-auto">
               Keyboard-navigable brain diagrams with sonification where pitch changes 
               denote neural activation levels and anatomical structures
             </p>
@@ -86,36 +84,28 @@ const Maps = () => {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <div className="flex items-center space-x-3">
-              <div className="bg-primary text-primary-foreground p-2 rounded">
-                <ArrowUp className="h-5 w-5" />
-              </div>
+              <div className="bg-primary text-primary-foreground p-2 rounded font-semibold">↑</div>
               <div>
                 <h3 className="font-semibold">↑ Arrow Key</h3>
                 <p className="text-sm text-muted-foreground">Move to upper brain region</p>
               </div>
             </div>
             <div className="flex items-center space-x-3">
-              <div className="bg-primary text-primary-foreground p-2 rounded">
-                <ArrowDown className="h-5 w-5" />
-              </div>
+              <div className="bg-primary text-primary-foreground p-2 rounded font-semibold">↓</div>
               <div>
                 <h3 className="font-semibold">↓ Arrow Key</h3>
                 <p className="text-sm text-muted-foreground">Move to lower brain region</p>
               </div>
             </div>
             <div className="flex items-center space-x-3">
-              <div className="bg-primary text-primary-foreground p-2 rounded">
-                <ArrowLeft className="h-5 w-5" />
-              </div>
+              <div className="bg-primary text-primary-foreground p-2 rounded font-semibold">←</div>
               <div>
                 <h3 className="font-semibold">← Arrow Key</h3>
                 <p className="text-sm text-muted-foreground">Move to left hemisphere</p>
               </div>
             </div>
             <div className="flex items-center space-x-3">
-              <div className="bg-primary text-primary-foreground p-2 rounded">
-                <ArrowRight className="h-5 w-5" />
-              </div>
+              <div className="bg-primary text-primary-foreground p-2 rounded font-semibold">→</div>
               <div>
                 <h3 className="font-semibold">→ Arrow Key</h3>
                 <p className="text-sm text-muted-foreground">Move to right hemisphere</p>
@@ -135,29 +125,20 @@ const Maps = () => {
             {brainMaps.map((map, index) => (
               <Card 
                 key={map.id} 
-                className={`hover:shadow-medium transition-all duration-300 animate-fade-in-up cursor-pointer ${
+                className={`card-modern transition-all duration-200 hover:-translate-y-1 hover:shadow-medium border-2 ${
                   selectedMap === map.id ? 'ring-2 ring-primary' : ''
                 }`}
                 style={{ animationDelay: `${index * 0.1}s` }}
-                tabIndex={0}
-                role="button"
-                aria-pressed={selectedMap === map.id}
-                onClick={() => setSelectedMap(selectedMap === map.id ? null : map.id)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    setSelectedMap(selectedMap === map.id ? null : map.id);
-                  }
-                }}
+                role="article"
+                aria-labelledby={`map-${map.id}-title`}
               >
                 <CardHeader>
-                  <div className="flex items-center justify-between mb-3">
-                    <map.icon className="h-8 w-8 text-primary" aria-hidden="true" />
+                  <div className="flex items-center justify-end mb-3">
                     <Badge variant="outline">
                       {map.complexity}
                     </Badge>
                   </div>
-                  <CardTitle className="text-xl">
+                  <CardTitle id={`map-${map.id}-title`} className="text-xl">
                     {map.title}
                   </CardTitle>
                   <CardDescription className="text-base">
@@ -183,7 +164,7 @@ const Maps = () => {
                     </div>
                     <div className="bg-muted/50 p-3 rounded-lg">
                       <div className="flex items-center text-sm text-muted-foreground">
-                        <Volume2 className="h-4 w-4 mr-2" />
+                        <Volume2 className="h-4 w-4 mr-2" aria-hidden="true" />
                         Base frequency: {map.baseFrequency}Hz
                       </div>
                     </div>
@@ -192,6 +173,8 @@ const Maps = () => {
                       variant={selectedMap === map.id ? "default" : "outline"}
                       hapticFeedback="medium"
                       announcement={selectedMap === map.id ? `${map.title} map deselected` : `${map.title} map selected`}
+                      onClick={() => setSelectedMap(selectedMap === map.id ? null : map.id)}
+                      aria-pressed={selectedMap === map.id}
                       aria-label={`${selectedMap === map.id ? "Deselect" : "Select"} ${map.title} interactive map`}
                     >
                       {selectedMap === map.id ? "Selected" : "Select Map"}
@@ -235,7 +218,7 @@ const Maps = () => {
                           }}
                           aria-label={`${region} - Frequency ${getFrequencyForRegion(currentMap.baseFrequency, index, currentMap.regions.length)}Hz`}
                         >
-                          <Layers className="h-6 w-6 mb-1" />
+                          <Layers className="h-4 w-4" aria-hidden="true" />
                           <span className="text-xs text-center">{region}</span>
                         </Button>
                       ))}
@@ -255,7 +238,7 @@ const Maps = () => {
                             )
                           }Hz</p>
                           <div className="flex items-center text-sm text-muted-foreground">
-                            <Volume2 className="h-4 w-4 mr-2" />
+                            <Volume2 className="h-4 w-4 mr-2" aria-hidden="true" />
                             Audio cue played on selection
                           </div>
                         </div>
@@ -291,10 +274,7 @@ const Maps = () => {
           <div className="max-w-3xl mx-auto">
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center">
-                  <Volume2 className="h-6 w-6 mr-2" />
-                  How Audio Maps Neural Structure
-                </CardTitle>
+                <CardTitle>How Audio Maps Neural Structure</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>

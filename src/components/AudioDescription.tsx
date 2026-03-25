@@ -1,7 +1,7 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
-import { Volume2, VolumeX, Play, Pause } from 'lucide-react';
 import { useAccessibilityContext } from '@/components/AccessibilityProvider';
+import { Play, Square } from 'lucide-react';
 
 interface AudioDescriptionProps {
   text: string;
@@ -19,24 +19,7 @@ export const AudioDescription: React.FC<AudioDescriptionProps> = ({
   const { announceToScreenReader, triggerHapticFeedback } = useAccessibilityContext();
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
 
-  useEffect(() => {
-    // Check if speech synthesis is supported
-    if ('speechSynthesis' in window) {
-      setIsSupported(true);
-      
-      if (autoPlay) {
-        handlePlay();
-      }
-    }
-
-    return () => {
-      if (utteranceRef.current) {
-        speechSynthesis.cancel();
-      }
-    };
-  }, [autoPlay]);
-
-  const handlePlay = () => {
+  const handlePlay = useCallback(() => {
     if (!isSupported) {
       announceToScreenReader('Audio description not supported on this device', 'assertive');
       return;
@@ -51,6 +34,7 @@ export const AudioDescription: React.FC<AudioDescriptionProps> = ({
     }
 
     const utterance = new SpeechSynthesisUtterance(text);
+    speechSynthesis.cancel();
     utteranceRef.current = utterance;
     
     utterance.rate = 0.9;
@@ -74,10 +58,38 @@ export const AudioDescription: React.FC<AudioDescriptionProps> = ({
     };
 
     speechSynthesis.speak(utterance);
-  };
+  }, [
+    isSupported,
+    isPlaying,
+    text,
+    announceToScreenReader,
+    triggerHapticFeedback,
+  ]);
+
+  useEffect(() => {
+    if ('speechSynthesis' in window) {
+      setIsSupported(true);
+
+      if (autoPlay) {
+        handlePlay();
+      }
+    }
+
+    return () => {
+      if (utteranceRef.current) {
+        speechSynthesis.cancel();
+      }
+    };
+  }, [autoPlay, handlePlay]);
 
   if (!isSupported) {
-    return null;
+    return (
+      <div className={`audio-description ${className}`}>
+        <p className="text-sm text-muted-foreground" aria-live="polite">
+          Audio playback is not supported on this device.
+        </p>
+      </div>
+    );
   }
 
   return (
@@ -86,21 +98,12 @@ export const AudioDescription: React.FC<AudioDescriptionProps> = ({
         variant="outline"
         size="sm"
         onClick={handlePlay}
+        aria-pressed={isPlaying}
         aria-label={isPlaying ? 'Stop audio description' : 'Play audio description'}
         title={isPlaying ? 'Stop audio description' : 'Play audio description'}
         className="flex items-center space-x-2"
       >
-        {isPlaying ? (
-          <>
-            <Pause className="h-4 w-4" aria-hidden="true" />
-            <VolumeX className="h-4 w-4" aria-hidden="true" />
-          </>
-        ) : (
-          <>
-            <Play className="h-4 w-4" aria-hidden="true" />
-            <Volume2 className="h-4 w-4" aria-hidden="true" />
-          </>
-        )}
+        {isPlaying ? <Square className="h-4 w-4" aria-hidden="true" /> : <Play className="h-4 w-4" aria-hidden="true" />}
         <span className="text-sm">
           {isPlaying ? 'Stop' : 'Play'} Audio
         </span>

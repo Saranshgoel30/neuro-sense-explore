@@ -16,6 +16,32 @@ export const useAccessibility = (options: UseAccessibilityOptions = {}) => {
   const [isHighContrast, setIsHighContrast] = useState(false);
   const [isReducedMotion, setIsReducedMotion] = useState(false);
 
+  const announceWithLiveRegion = useCallback((message: string, priority: 'polite' | 'assertive') => {
+    const regionId = priority === 'assertive' ? 'live-region-assertive' : 'live-region-polite';
+    const liveRegion = document.getElementById(regionId);
+
+    if (liveRegion) {
+      liveRegion.textContent = '';
+      window.requestAnimationFrame(() => {
+        liveRegion.textContent = message;
+      });
+      return;
+    }
+
+    const fallbackRegion = document.createElement('div');
+    fallbackRegion.setAttribute('aria-live', priority);
+    fallbackRegion.setAttribute('aria-atomic', 'true');
+    fallbackRegion.className = 'sr-only';
+    fallbackRegion.textContent = message;
+    document.body.appendChild(fallbackRegion);
+
+    setTimeout(() => {
+      if (document.body.contains(fallbackRegion)) {
+        document.body.removeChild(fallbackRegion);
+      }
+    }, 1200);
+  }, []);
+
   // Haptic feedback function
   const triggerHapticFeedback = useCallback((pattern: 'light' | 'medium' | 'heavy' = 'medium') => {
     if (!enableHapticFeedback) return;
@@ -34,19 +60,8 @@ export const useAccessibility = (options: UseAccessibilityOptions = {}) => {
   const announceToScreenReader = useCallback((message: string, priority: 'polite' | 'assertive' = 'polite') => {
     if (!enableAudioFeedback) return;
 
-    const announcement = document.createElement('div');
-    announcement.setAttribute('aria-live', priority);
-    announcement.setAttribute('aria-atomic', 'true');
-    announcement.className = 'sr-only';
-    announcement.textContent = message;
-    
-    document.body.appendChild(announcement);
-    
-    // Remove after announcement
-    setTimeout(() => {
-      document.body.removeChild(announcement);
-    }, 1000);
-  }, [enableAudioFeedback]);
+    announceWithLiveRegion(message, priority);
+  }, [enableAudioFeedback, announceWithLiveRegion]);
 
   // High contrast toggle
   const toggleHighContrast = useCallback(() => {
@@ -94,12 +109,13 @@ export const useAccessibility = (options: UseAccessibilityOptions = {}) => {
     const skipLink = document.createElement('a');
     skipLink.href = `#${targetId}`;
     skipLink.textContent = label;
-    skipLink.className = 'sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 bg-primary text-primary-foreground p-2 z-50';
-    skipLink.addEventListener('click', () => {
+    skipLink.className = 'skip-link';
+    skipLink.addEventListener('click', (event) => {
+      event.preventDefault();
       const target = document.getElementById(targetId);
       if (target) {
         target.focus();
-        announceToScreenReader(`Skipped to ${label}`);
+        announceToScreenReader(`Skipped to ${label.toLowerCase()}`);
       }
     });
     return skipLink;
@@ -119,7 +135,7 @@ export const useAccessibility = (options: UseAccessibilityOptions = {}) => {
       // Skip to main content: Alt+1
       if (e.altKey && e.key === '1') {
         e.preventDefault();
-        const mainContent = document.querySelector('main') as HTMLElement;
+        const mainContent = document.getElementById('main-content') as HTMLElement | null;
         if (mainContent) {
           mainContent.focus();
           announceToScreenReader('Skipped to main content');
@@ -129,9 +145,9 @@ export const useAccessibility = (options: UseAccessibilityOptions = {}) => {
       // Skip to navigation: Alt+2
       if (e.altKey && e.key === '2') {
         e.preventDefault();
-        const navigation = document.querySelector('nav') as HTMLElement;
+        const navigation = document.getElementById('main-navigation') as HTMLElement | null;
         if (navigation) {
-          const firstLink = navigation.querySelector('a') as HTMLElement;
+          const firstLink = navigation.querySelector('a, button') as HTMLElement | null;
           if (firstLink) {
             firstLink.focus();
             announceToScreenReader('Skipped to navigation');

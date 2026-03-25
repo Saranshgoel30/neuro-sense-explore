@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
 import Layout from '@/components/Layout';
-import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { BookOpen, Search, Filter, Volume2, Map, Layers, Download, Play, Eye, Brain, Heart, Zap, Users } from 'lucide-react';
+import { BookOpen, Download, Headphones, Search, Sparkles } from 'lucide-react';
 import { AudioDescription } from '@/components/AudioDescription';
 import { AccessibleButton } from '@/components/AccessibleButton';
+import { useAccessibilityContext } from '@/components/AccessibilityProvider';
 
 const Library = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedType, setSelectedType] = useState("all");
   const [selectedDifficulty, setSelectedDifficulty] = useState("all");
+  const { announceToScreenReader } = useAccessibilityContext();
 
   const resources = [
     {
@@ -23,7 +25,6 @@ const Library = () => {
       duration: "2 hours 15 minutes",
       difficulty: "Beginner",
       topic: "General",
-      icon: Brain,
       tags: ["Foundation", "Overview", "Brain structure"],
       downloadSize: "45MB"
     },
@@ -35,7 +36,6 @@ const Library = () => {
       duration: "45 minutes",
       difficulty: "Intermediate",
       topic: "Vision",
-      icon: Eye,
       tags: ["Visual processing", "Retina", "Cortex"],
       downloadSize: "12MB"
     },
@@ -47,7 +47,6 @@ const Library = () => {
       duration: "8-12 hours print time",
       difficulty: "Intermediate",
       topic: "Anatomy",
-      icon: Layers,
       tags: ["Brain anatomy", "3D printing", "Tactile"],
       downloadSize: "125MB"
     },
@@ -59,7 +58,6 @@ const Library = () => {
       duration: "1 hour 30 minutes",
       difficulty: "Beginner",
       topic: "Memory",
-      icon: Brain,
       tags: ["Hippocampus", "Memory formation", "Learning"],
       downloadSize: "38MB"
     },
@@ -71,7 +69,6 @@ const Library = () => {
       duration: "1 hour 15 minutes",
       difficulty: "Advanced",
       topic: "Networks",
-      icon: Zap,
       tags: ["Connectivity", "Networks", "Computation"],
       downloadSize: "18MB"
     },
@@ -83,7 +80,6 @@ const Library = () => {
       duration: "2-3 hours print time",
       difficulty: "Beginner",
       topic: "Cells",
-      icon: Zap,
       tags: ["Neuron", "Motor control", "Cell structure"],
       downloadSize: "28MB"
     },
@@ -95,7 +91,6 @@ const Library = () => {
       duration: "1 hour 45 minutes",
       difficulty: "Intermediate",
       topic: "Emotion",
-      icon: Heart,
       tags: ["Limbic system", "Emotions", "Amygdala"],
       downloadSize: "42MB"
     },
@@ -107,20 +102,10 @@ const Library = () => {
       duration: "55 minutes",
       difficulty: "Advanced",
       topic: "Social",
-      icon: Users,
       tags: ["Social cognition", "Theory of mind", "Mirror neurons"],
       downloadSize: "15MB"
     }
   ];
-
-  const getTypeIcon = (type: string) => {
-    switch (type) {
-      case 'audio-lesson': return Volume2;
-      case 'sonified-map': return Map;
-      case '3d-model': return Layers;
-      default: return BookOpen;
-    }
-  };
 
   const getTypeLabel = (type: string) => {
     switch (type) {
@@ -133,9 +118,9 @@ const Library = () => {
 
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
-      case 'Beginner': return 'bg-success text-white';
-      case 'Intermediate': return 'bg-warning text-white';
-      case 'Advanced': return 'bg-destructive text-white';
+      case 'Beginner': return 'bg-success text-success-foreground';
+      case 'Intermediate': return 'bg-warning text-warning-foreground';
+      case 'Advanced': return 'bg-destructive text-destructive-foreground';
       default: return 'bg-muted';
     }
   };
@@ -150,13 +135,20 @@ const Library = () => {
     return matchesSearch && matchesType && matchesDifficulty;
   });
 
+  React.useEffect(() => {
+    announceToScreenReader(`${filteredResources.length} resources available`, 'polite');
+  }, [filteredResources.length, announceToScreenReader]);
+
   return (
     <Layout>
       {/* Header */}
-      <section className="py-16 bg-gradient-hero text-white">
+      <section className="py-16 bg-gradient-primary text-primary-foreground">
         <div className="container mx-auto px-4">
           <div className="text-center">
-            <BookOpen className="h-16 w-16 mx-auto mb-6 text-white/90" aria-hidden="true" />
+            <div className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/30 bg-primary-foreground/10 px-4 py-2 mb-6 text-sm">
+              <BookOpen className="h-4 w-4" aria-hidden="true" />
+              Complete accessible resource hub
+            </div>
             <h1 className="text-4xl md:text-5xl font-bold mb-4" tabIndex={-1}>
               Resource Library
             </h1>
@@ -164,7 +156,7 @@ const Library = () => {
               text="Welcome to the Resource Library. This is your complete collection of accessible neuroscience resources, organized by topic, difficulty, and learning style for comprehensive education."
               className="mb-4"
             />
-            <p className="text-xl text-white/90 max-w-2xl mx-auto">
+            <p className="text-xl text-primary-foreground/90 max-w-2xl mx-auto">
               Complete collection of accessible neuroscience resources organized by topic, 
               difficulty, and learning style for comprehensive education
             </p>
@@ -179,8 +171,10 @@ const Library = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {/* Search */}
               <div className="relative">
-                <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Label htmlFor="resource-search" className="sr-only">Search resources</Label>
+                <Search className="h-4 w-4 absolute left-3 top-3 text-muted-foreground" aria-hidden="true" />
                 <Input
+                  id="resource-search"
                   placeholder="Search resources..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
@@ -190,37 +184,43 @@ const Library = () => {
               </div>
 
               {/* Type Filter */}
-              <Select value={selectedType} onValueChange={setSelectedType}>
-                <SelectTrigger>
-                  <SelectValue placeholder="All Types" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Types</SelectItem>
-                  <SelectItem value="audio-lesson">Audio Lessons</SelectItem>
-                  <SelectItem value="sonified-map">Sonified Maps</SelectItem>
-                  <SelectItem value="3d-model">3D Models</SelectItem>
-                </SelectContent>
-              </Select>
+              <div>
+                <Label htmlFor="type-filter" className="sr-only">Filter by resource type</Label>
+                <Select value={selectedType} onValueChange={setSelectedType}>
+                  <SelectTrigger id="type-filter" aria-label="Filter by resource type">
+                    <SelectValue placeholder="All Types" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Types</SelectItem>
+                    <SelectItem value="audio-lesson">Audio Lessons</SelectItem>
+                    <SelectItem value="sonified-map">Sonified Maps</SelectItem>
+                    <SelectItem value="3d-model">3D Models</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
 
               {/* Difficulty Filter */}
-              <Select value={selectedDifficulty} onValueChange={setSelectedDifficulty}>
-                <SelectTrigger>
-                  <SelectValue placeholder="All Difficulties" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Difficulties</SelectItem>
-                  <SelectItem value="Beginner">Beginner</SelectItem>
-                  <SelectItem value="Intermediate">Intermediate</SelectItem>
-                  <SelectItem value="Advanced">Advanced</SelectItem>
-                </SelectContent>
-              </Select>
+              <div>
+                <Label htmlFor="difficulty-filter" className="sr-only">Filter by difficulty</Label>
+                <Select value={selectedDifficulty} onValueChange={setSelectedDifficulty}>
+                  <SelectTrigger id="difficulty-filter" aria-label="Filter by difficulty">
+                    <SelectValue placeholder="All Difficulties" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Difficulties</SelectItem>
+                    <SelectItem value="Beginner">Beginner</SelectItem>
+                    <SelectItem value="Intermediate">Intermediate</SelectItem>
+                    <SelectItem value="Advanced">Advanced</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Stats */}
-      <section className="py-8 bg-muted">
+      <section className="py-8 bg-muted" aria-live="polite" aria-atomic="true">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
@@ -233,19 +233,19 @@ const Library = () => {
                 </p>
               </div>
               <div>
-                <div className="text-2xl font-bold text-secondary">
+                <div className="text-2xl font-bold text-primary">
                   {filteredResources.filter(r => r.type === 'audio-lesson').length}
                 </div>
                 <p className="text-sm text-muted-foreground">Audio Lessons</p>
               </div>
               <div>
-                <div className="text-2xl font-bold text-accent">
+                <div className="text-2xl font-bold text-primary">
                   {filteredResources.filter(r => r.type === 'sonified-map').length}
                 </div>
                 <p className="text-sm text-muted-foreground">Sonified Maps</p>
               </div>
               <div>
-                <div className="text-2xl font-bold text-warning">
+                <div className="text-2xl font-bold text-primary">
                   {filteredResources.filter(r => r.type === '3d-model').length}
                 </div>
                 <p className="text-sm text-muted-foreground">3D Models</p>
@@ -269,7 +269,6 @@ const Library = () => {
 
           {filteredResources.length === 0 ? (
             <div className="text-center py-12">
-              <Search className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
               <h3 className="text-xl font-semibold mb-2">No resources found</h3>
               <p className="text-muted-foreground">
                 Try adjusting your search criteria or filters
@@ -278,32 +277,21 @@ const Library = () => {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredResources.map((resource, index) => {
-                const TypeIcon = getTypeIcon(resource.type);
-                const ResourceIcon = resource.icon;
-                
                 return (
                   <Card 
                     key={resource.id} 
-                    className="hover:shadow-medium transition-all duration-300 animate-fade-in-up"
+                    className="card-modern transition-all duration-200 hover:-translate-y-1 hover:shadow-medium border-2"
                     style={{ animationDelay: `${index * 0.05}s` }}
                   >
                     <CardHeader>
                       <div className="flex items-center justify-between mb-3">
-                        <div className="flex items-center space-x-2">
-                          <TypeIcon className="h-5 w-5 text-primary" />
-                          <Badge variant="outline">
-                            {getTypeLabel(resource.type)}
-                          </Badge>
-                        </div>
+                        <Badge variant="outline">{getTypeLabel(resource.type)}</Badge>
                         <Badge className={getDifficultyColor(resource.difficulty)}>
                           {resource.difficulty}
                         </Badge>
                       </div>
                       
-                      <div className="flex items-center space-x-3 mb-2">
-                        <ResourceIcon className="h-8 w-8 text-primary" />
-                        <CardTitle className="text-lg">{resource.title}</CardTitle>
-                      </div>
+                      <CardTitle className="text-lg">{resource.title}</CardTitle>
                       
                       <CardDescription className="text-base">
                         {resource.description}
@@ -340,7 +328,7 @@ const Library = () => {
                               announcement={`Playing ${resource.title}`}
                               aria-label={`Play ${resource.title} audio lesson`}
                             >
-                              <Play className="h-4 w-4 mr-1" />
+                                <Headphones className="h-4 w-4" aria-hidden="true" />
                               Play
                             </AccessibleButton>
                           )}
@@ -353,7 +341,7 @@ const Library = () => {
                               announcement={`Exploring ${resource.title} map`}
                               aria-label={`Explore ${resource.title} interactive map`}
                             >
-                              <Map className="h-4 w-4 mr-1" />
+                                <Sparkles className="h-4 w-4" aria-hidden="true" />
                               Explore
                             </AccessibleButton>
                           )}
@@ -364,7 +352,7 @@ const Library = () => {
                             announcement={`Downloading ${resource.title}`}
                             aria-label={`Download ${resource.title} resource`}
                           >
-                            <Download className="h-4 w-4 mr-1" />
+                            <Download className="h-4 w-4" aria-hidden="true" />
                             Get
                           </AccessibleButton>
                         </div>
@@ -388,10 +376,7 @@ const Library = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <Card>
                 <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <Brain className="h-6 w-6 mr-2 text-success" />
-                    Beginner Path
-                  </CardTitle>
+                  <CardTitle>Beginner Path</CardTitle>
                   <CardDescription>
                     Start your neuroscience journey with fundamental concepts
                   </CardDescription>
@@ -408,10 +393,7 @@ const Library = () => {
 
               <Card>
                 <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <Eye className="h-6 w-6 mr-2 text-warning" />
-                    Vision Specialist
-                  </CardTitle>
+                  <CardTitle>Vision Specialist</CardTitle>
                   <CardDescription>
                     Deep dive into visual processing and perception
                   </CardDescription>
@@ -428,10 +410,7 @@ const Library = () => {
 
               <Card>
                 <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <Zap className="h-6 w-6 mr-2 text-destructive" />
-                    Advanced Systems
-                  </CardTitle>
+                  <CardTitle>Advanced Systems</CardTitle>
                   <CardDescription>
                     Explore complex neural networks and interactions
                   </CardDescription>
