@@ -136,8 +136,8 @@ const Tactile = () => {
   return (
     <Layout>
       {/* Header */}
-      <section className="py-16 bg-gradient-secondary text-primary-foreground">
-        <div className="container mx-auto px-4">
+      <section className="section-regular bg-gradient-secondary text-primary-foreground">
+        <div className="container mx-auto px-4 md:px-6">
           <div className="text-center">
             <div className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/30 bg-primary-foreground/10 px-4 py-2 mb-6 text-sm">
               <Boxes className="h-4 w-4" aria-hidden="true" />
@@ -159,13 +159,13 @@ const Tactile = () => {
       </section>
 
       {/* Quick Guide */}
-      <section className="py-8 bg-muted" aria-labelledby="guide-heading">
-        <div className="container mx-auto px-4">
+      <section className="section-compact bg-muted" aria-labelledby="guide-heading">
+        <div className="container mx-auto px-4 md:px-6">
           <h2 id="guide-heading" className="text-2xl font-bold mb-6">
             3D Printing Guide
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div className="flex items-start space-x-3">
+            <div className="flex items-start space-x-3 rounded-xl border bg-card p-4 shadow-soft">
               <div className="bg-primary text-primary-foreground rounded-full px-3 py-2 font-semibold"><Download className="h-4 w-4" aria-hidden="true" /></div>
               <div>
                 <h3 className="font-semibold">Download</h3>
@@ -174,7 +174,7 @@ const Tactile = () => {
                 </p>
               </div>
             </div>
-            <div className="flex items-start space-x-3">
+            <div className="flex items-start space-x-3 rounded-xl border bg-card p-4 shadow-soft">
               <div className="bg-primary text-primary-foreground rounded-full px-3 py-2 font-semibold"><Printer className="h-4 w-4" aria-hidden="true" /></div>
               <div>
                 <h3 className="font-semibold">Print</h3>
@@ -183,7 +183,7 @@ const Tactile = () => {
                 </p>
               </div>
             </div>
-            <div className="flex items-start space-x-3">
+            <div className="flex items-start space-x-3 rounded-xl border bg-card p-4 shadow-soft">
               <div className="bg-primary text-primary-foreground rounded-full px-3 py-2 font-semibold"><Headphones className="h-4 w-4" aria-hidden="true" /></div>
               <div>
                 <h3 className="font-semibold">Listen</h3>
@@ -192,7 +192,7 @@ const Tactile = () => {
                 </p>
               </div>
             </div>
-            <div className="flex items-start space-x-3">
+            <div className="flex items-start space-x-3 rounded-xl border bg-card p-4 shadow-soft">
               <div className="bg-primary text-primary-foreground rounded-full px-3 py-2 font-semibold"><Boxes className="h-4 w-4" aria-hidden="true" /></div>
               <div>
                 <h3 className="font-semibold">Explore</h3>
@@ -206,14 +206,14 @@ const Tactile = () => {
       </section>
 
       {/* Model Categories */}
-      <section className="py-16" aria-labelledby="categories-heading">
-        <div className="container mx-auto px-4">
+      <section className="section-regular" aria-labelledby="categories-heading">
+        <div className="container mx-auto px-4 md:px-6">
           <h2 id="categories-heading" className="text-3xl font-bold mb-8 text-center">
             Model Categories
           </h2>
           
           <Tabs value={selectedCategory} onValueChange={setSelectedCategory} className="w-full">
-            <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 mb-8">
+            <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 mb-8 rounded-xl border bg-card p-1 h-auto">
               {modelCategories.map((category) => (
                 <TabsTrigger 
                   key={category.id} 
@@ -328,14 +328,14 @@ const Tactile = () => {
       </section>
 
       {/* Printing Requirements */}
-      <section className="py-12 bg-card border-t" aria-labelledby="requirements-heading">
-        <div className="container mx-auto px-4">
+      <section className="section-regular bg-card border-t" aria-labelledby="requirements-heading">
+        <div className="container mx-auto px-4 md:px-6">
           <h2 id="requirements-heading" className="text-2xl font-bold mb-8 text-center">
             Printing Requirements & Tips
           </h2>
           <div className="max-w-4xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <Card>
+              <Card className="border-2">
                 <CardHeader>
                   <CardTitle>Technical Specifications</CardTitle>
                 </CardHeader>
@@ -358,7 +358,7 @@ const Tactile = () => {
                 </CardContent>
               </Card>
 
-              <Card>
+              <Card className="border-2">
                 <CardHeader>
                   <CardTitle>Audio Guide Features</CardTitle>
                 </CardHeader>
@@ -386,8 +386,8 @@ const Tactile = () => {
       </section>
 
       {/* Accessibility Note */}
-      <section className="py-8 bg-primary text-primary-foreground">
-        <div className="container mx-auto px-4 text-center">
+      <section className="section-compact bg-primary text-primary-foreground">
+        <div className="container mx-auto px-4 md:px-6 text-center">
           <h3 className="text-xl font-bold mb-4">
             Designed for Universal Access
           </h3>

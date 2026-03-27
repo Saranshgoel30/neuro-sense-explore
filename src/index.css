@@ -136,6 +136,17 @@ All colors MUST be HSL.
     min-height: 100vh;
   }
 
+  button,
+  a,
+  input,
+  select,
+  textarea,
+  [role='button'] {
+    transition-property: color, background-color, border-color, box-shadow, transform, opacity;
+    transition-duration: 200ms;
+    transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
   /* Accessibility improvements */
   *:focus-visible {
     outline: 3px solid hsl(var(--ring));
@@ -327,6 +338,22 @@ All colors MUST be HSL.
     background: hsl(var(--card));
     border: 1px solid hsl(var(--border));
     box-shadow: var(--shadow-soft);
+  }
+
+  .section-compact {
+    @apply py-8 md:py-10;
+  }
+
+  .section-regular {
+    @apply py-12 md:py-16;
+  }
+
+  .section-spacious {
+    @apply py-14 md:py-20;
+  }
+
+  .shell-card {
+    @apply rounded-xl border bg-card shadow-soft;
   }
 
   kbd {

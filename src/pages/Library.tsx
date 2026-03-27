@@ -142,8 +142,8 @@ const Library = () => {
   return (
     <Layout>
       {/* Header */}
-      <section className="py-16 bg-gradient-primary text-primary-foreground">
-        <div className="container mx-auto px-4">
+      <section className="section-regular bg-gradient-primary text-primary-foreground">
+        <div className="container mx-auto px-4 md:px-6">
           <div className="text-center">
             <div className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/30 bg-primary-foreground/10 px-4 py-2 mb-6 text-sm">
               <BookOpen className="h-4 w-4" aria-hidden="true" />
@@ -165,9 +165,9 @@ const Library = () => {
       </section>
 
       {/* Search and Filters */}
-      <section className="py-8 bg-card border-b">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
+      <section className="section-compact bg-card border-b">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="max-w-4xl mx-auto rounded-xl border bg-muted/40 p-4 shadow-soft">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {/* Search */}
               <div className="relative">
@@ -220,8 +220,8 @@ const Library = () => {
       </section>
 
       {/* Stats */}
-      <section className="py-8 bg-muted" aria-live="polite" aria-atomic="true">
-        <div className="container mx-auto px-4">
+      <section className="section-compact bg-muted" aria-live="polite" aria-atomic="true">
+        <div className="container mx-auto px-4 md:px-6">
           <div className="max-w-4xl mx-auto">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
               <div>
@@ -256,8 +256,8 @@ const Library = () => {
       </section>
 
       {/* Resources Grid */}
-      <section className="py-16" aria-labelledby="resources-heading">
-        <div className="container mx-auto px-4">
+      <section className="section-regular" aria-labelledby="resources-heading">
+        <div className="container mx-auto px-4 md:px-6">
           <h2 id="resources-heading" className="text-3xl font-bold mb-8">
             Available Resources
             {(searchQuery || selectedType !== "all" || selectedDifficulty !== "all") && (
@@ -268,7 +268,7 @@ const Library = () => {
           </h2>
 
           {filteredResources.length === 0 ? (
-            <div className="text-center py-12">
+            <div className="text-center py-12 rounded-xl border bg-muted/40">
               <h3 className="text-xl font-semibold mb-2">No resources found</h3>
               <p className="text-muted-foreground">
                 Try adjusting your search criteria or filters
@@ -283,7 +283,7 @@ const Library = () => {
                     className="card-modern transition-all duration-200 hover:-translate-y-1 hover:shadow-medium border-2"
                     style={{ animationDelay: `${index * 0.05}s` }}
                   >
-                    <CardHeader>
+                    <CardHeader className="pb-3">
                       <div className="flex items-center justify-between mb-3">
                         <Badge variant="outline">{getTypeLabel(resource.type)}</Badge>
                         <Badge className={getDifficultyColor(resource.difficulty)}>
@@ -301,13 +301,14 @@ const Library = () => {
                     <CardContent>
                       <div className="space-y-4">
                         {/* Duration & Size */}
-                        <div className="flex justify-between text-sm text-muted-foreground">
+                        <div className="flex justify-between text-sm text-muted-foreground rounded-lg border bg-muted/40 px-3 py-2">
                           <span>{resource.duration}</span>
                           <span>{resource.downloadSize}</span>
                         </div>
 
                         {/* Tags */}
                         <div>
+                          <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Topics</div>
                           <div className="flex flex-wrap gap-2">
                             {resource.tags.map((tag) => (
                               <Badge key={tag} variant="secondary" className="text-xs">
@@ -367,8 +368,8 @@ const Library = () => {
       </section>
 
       {/* Learning Paths */}
-      <section className="py-16 bg-muted" aria-labelledby="paths-heading">
-        <div className="container mx-auto px-4">
+      <section className="section-regular bg-muted" aria-labelledby="paths-heading">
+        <div className="container mx-auto px-4 md:px-6">
           <h2 id="paths-heading" className="text-3xl font-bold mb-8 text-center">
             Suggested Learning Paths
           </h2>
