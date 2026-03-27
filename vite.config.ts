@@ -4,8 +4,9 @@ import path from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig(() => {
+  const deployTarget = process.env.DEPLOY_TARGET;
   const repositoryName = process.env.GITHUB_REPOSITORY?.split("/")[1];
-  const isGitHubPagesBuild = process.env.GITHUB_ACTIONS === "true" && Boolean(repositoryName);
+  const isGitHubPagesBuild = deployTarget === "github-pages" && Boolean(repositoryName);
 
   return {
     base: isGitHubPagesBuild ? `/${repositoryName}/` : "/",

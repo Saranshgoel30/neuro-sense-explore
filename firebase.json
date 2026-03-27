@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "site": "neuro-view",
     "public": "dist",
     "ignore": [
       "firebase.json",
