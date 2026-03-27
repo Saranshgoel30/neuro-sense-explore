@@ -16,30 +16,69 @@ export const AudioDescription: React.FC<AudioDescriptionProps> = ({
 }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isSupported, setIsSupported] = useState(false);
+  const [voicesReady, setVoicesReady] = useState(false);
   const { announceToScreenReader, triggerHapticFeedback } = useAccessibilityContext();
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
 
+  const getPreferredVoice = useCallback(() => {
+    const voices = window.speechSynthesis.getVoices();
+    if (!voices.length) return null;
+
+    return (
+      voices.find((voice) => voice.lang.toLowerCase().startsWith('en')) ||
+      voices[0]
+    );
+  }, []);
+
+  const stopPlayback = useCallback((announce = true) => {
+    window.speechSynthesis.cancel();
+    utteranceRef.current = null;
+    setIsPlaying(false);
+    triggerHapticFeedback('light');
+    if (announce) {
+      announceToScreenReader('Audio description stopped', 'polite');
+    }
+  }, [announceToScreenReader, triggerHapticFeedback]);
+
   const handlePlay = useCallback(() => {
-    if (!isSupported) {
+    if (!isSupported || !voicesReady) {
       announceToScreenReader('Audio description not supported on this device', 'assertive');
       return;
     }
 
-    if (isPlaying) {
-      speechSynthesis.cancel();
-      setIsPlaying(false);
-      triggerHapticFeedback('light');
-      announceToScreenReader('Audio description stopped', 'polite');
+    if (!text.trim()) {
+      announceToScreenReader('Audio description text is empty', 'assertive');
       return;
     }
 
+    if (isPlaying) {
+      stopPlayback();
+      return;
+    }
+
+    const synth = window.speechSynthesis;
+
+    if (synth.paused) {
+      synth.resume();
+    }
+
+    if (synth.speaking) {
+      synth.cancel();
+    }
+
     const utterance = new SpeechSynthesisUtterance(text);
-    speechSynthesis.cancel();
     utteranceRef.current = utterance;
     
     utterance.rate = 0.9;
     utterance.pitch = 1;
     utterance.volume = 1;
+    utterance.lang = 'en-US';
+
+    const preferredVoice = getPreferredVoice();
+    if (preferredVoice) {
+      utterance.voice = preferredVoice;
+      utterance.lang = preferredVoice.lang;
+    }
     
     utterance.onstart = () => {
       setIsPlaying(true);
@@ -49,38 +88,70 @@ export const AudioDescription: React.FC<AudioDescriptionProps> = ({
     
     utterance.onend = () => {
       setIsPlaying(false);
+      utteranceRef.current = null;
       triggerHapticFeedback('light');
     };
     
     utterance.onerror = () => {
       setIsPlaying(false);
+      utteranceRef.current = null;
       announceToScreenReader('Audio description failed to play', 'assertive');
     };
 
-    speechSynthesis.speak(utterance);
+    synth.speak(utterance);
   }, [
     isSupported,
+    voicesReady,
     isPlaying,
     text,
+    getPreferredVoice,
+    stopPlayback,
     announceToScreenReader,
     triggerHapticFeedback,
   ]);
 
   useEffect(() => {
-    if ('speechSynthesis' in window) {
-      setIsSupported(true);
+    if (typeof window === 'undefined') {
+      return;
+    }
 
-      if (autoPlay) {
+    const isSpeechAvailable = 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window;
+    setIsSupported(isSpeechAvailable);
+
+    if (!isSpeechAvailable) {
+      return;
+    }
+
+    const synth = window.speechSynthesis;
+
+    const updateVoicesReady = () => {
+      setVoicesReady(synth.getVoices().length > 0);
+    };
+
+    updateVoicesReady();
+    synth.addEventListener('voiceschanged', updateVoicesReady);
+
+    if (autoPlay) {
+      const timer = window.setTimeout(() => {
         handlePlay();
-      }
+      }, 150);
+
+      return () => {
+        window.clearTimeout(timer);
+        synth.removeEventListener('voiceschanged', updateVoicesReady);
+        if (utteranceRef.current) {
+          stopPlayback(false);
+        }
+      };
     }
 
     return () => {
+      synth.removeEventListener('voiceschanged', updateVoicesReady);
       if (utteranceRef.current) {
-        speechSynthesis.cancel();
+        stopPlayback(false);
       }
     };
-  }, [autoPlay, handlePlay]);
+  }, [autoPlay, handlePlay, stopPlayback]);
 
   if (!isSupported) {
     return (
@@ -101,7 +172,7 @@ export const AudioDescription: React.FC<AudioDescriptionProps> = ({
         aria-pressed={isPlaying}
         aria-label={isPlaying ? 'Stop audio description' : 'Play audio description'}
         title={isPlaying ? 'Stop audio description' : 'Play audio description'}
-        className="flex items-center space-x-2"
+        className="flex items-center space-x-2 text-foreground"
       >
         {isPlaying ? <Square className="h-4 w-4" aria-hidden="true" /> : <Play className="h-4 w-4" aria-hidden="true" />}
         <span className="text-sm">
