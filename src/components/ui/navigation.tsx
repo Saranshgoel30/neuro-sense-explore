@@ -1,17 +1,15 @@
 import React, { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Home, BookOpen, Map, Layers, Volume2, Contrast, BrainCircuit, Users, Mic } from 'lucide-react';
+import { Home, BookOpen, Map, Layers, Volume2, Contrast, BrainCircuit } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAccessibilityContext } from '@/components/AccessibilityProvider';
 
 const navItems = [
   { href: '/', label: 'Home', icon: Home, description: 'Homepage' },
   { href: '/lessons', label: 'Audio Lessons', icon: Volume2, description: 'Podcast-style neuroscience modules' },
-  { href: '/podcast-scripts', label: 'Podcast Scripts', icon: Mic, description: 'Verbatim text for our upcoming podcast episodes' },
   { href: '/maps', label: 'Sonified Maps', icon: Map, description: 'Interactive brain diagrams with sound' },
   { href: '/tactile', label: 'Tactile Hub', icon: Layers, description: '3D printable neuroscience models' },
   { href: '/library', label: 'Library', icon: BookOpen, description: 'Complete resource collection' },
-  { href: '/about', label: 'About', icon: Users, description: 'Aims, objectives, and team' },
 ];
 
 const Navigation = () => {
@@ -34,6 +32,7 @@ const Navigation = () => {
       id="main-navigation"
       className="sticky top-0 z-40 border-b bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80 shadow-soft"
       aria-label="Main navigation"
+      aria-describedby="keyboard-navigation-help"
     >
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex flex-col gap-3 py-2.5 md:py-3">
@@ -50,7 +49,7 @@ const Navigation = () => {
                 triggerHapticFeedback('medium');
               }}
               aria-pressed={isHighContrast}
-              aria-keyshortcuts="Control+Alt+C"
+              aria-keyshortcuts="Control+Alt+C Alt+1 Alt+2 Alt+3"
               aria-label={`${isHighContrast ? 'Disable' : 'Enable'} high contrast mode (Control + Alt + C)`}
               title="Toggle high contrast mode"
               className="gap-2"
@@ -78,9 +77,10 @@ const Navigation = () => {
                       onClick={() => handleNavClick(item.label)}
                       onFocus={(event) => {
                         event.currentTarget.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+                        announceToScreenReader(`${item.label}. ${item.description}`, 'polite');
                       }}
                       aria-current={isActive ? 'page' : undefined}
-                      aria-label={`${item.description}${isActive ? ' (current page)' : ''}`}
+                      aria-label={`${item.label}. ${item.description}${isActive ? '. Current page' : ''}`}
                     >
                       <Icon className="h-4 w-4" aria-hidden="true" />
                       <span>{item.label}</span>
@@ -90,6 +90,10 @@ const Navigation = () => {
               );
             })}
           </ul>
+
+          <p id="keyboard-navigation-help" className="sr-only">
+            Keyboard shortcuts: Alt plus 1 for main content, Alt plus 2 for navigation, Alt plus 3 for footer, and Control plus Alt plus C for high contrast mode.
+          </p>
         </div>
       </div>
     </nav>

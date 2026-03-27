@@ -39,9 +39,11 @@ export const AccessibilityProvider: React.FC<AccessibilityProviderProps> = ({ ch
     
     const skipToMain = accessibility.createSkipLink('main-content', 'Skip to main content');
     const skipToNav = accessibility.createSkipLink('main-navigation', 'Skip to navigation');
+    const skipToFooter = accessibility.createSkipLink('site-footer', 'Skip to footer');
     
     skipLinksContainer.appendChild(skipToMain);
     skipLinksContainer.appendChild(skipToNav);
+    skipLinksContainer.appendChild(skipToFooter);
     
     if (!document.getElementById('skip-links')) {
       document.body.insertBefore(skipLinksContainer, document.body.firstChild);

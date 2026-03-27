@@ -36,7 +36,7 @@ const Layout = ({ children }: LayoutProps) => {
       >
         {children}
       </main>
-      <footer id="site-footer" className="bg-muted/70 mt-auto section-compact border-t" aria-label="Site footer">
+      <footer id="site-footer" className="bg-muted/70 mt-auto section-compact border-t focus-visible:outline-none" aria-label="Site footer" tabIndex={-1}>
         <div className="container mx-auto px-4 md:px-6">
           <div className="rounded-2xl border bg-card px-6 py-6 text-center shadow-soft">
             <div className="mb-4 flex flex-col items-center justify-center space-y-3">
