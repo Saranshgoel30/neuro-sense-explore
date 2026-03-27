@@ -201,7 +201,7 @@ const Index = () => {
       </section>
 
       {/* Accessibility Commitment */}
-      <section className="section-regular bg-primary text-primary-foreground" aria-labelledby="accessibility-heading">
+      <section className="section-regular bg-primary text-primary-foreground accessibility-commitment" aria-labelledby="accessibility-heading">
         <div className="container mx-auto px-4 md:px-6 text-center">
           <h2 id="accessibility-heading" className="text-3xl font-bold mb-6">
             Built for Universal Access

@@ -320,6 +320,34 @@ All colors MUST be HSL.
     border-color: hsl(var(--border)) !important;
   }
 
+  .high-contrast .accessibility-commitment {
+    background-color: hsl(var(--background)) !important;
+    color: hsl(var(--foreground)) !important;
+    border-top: 1px solid hsl(var(--border));
+    border-bottom: 1px solid hsl(var(--border));
+  }
+
+  .high-contrast .accessibility-commitment .bg-primary-foreground\/10,
+  .high-contrast .accessibility-commitment .bg-primary-foreground\/20 {
+    background-color: hsl(var(--muted)) !important;
+  }
+
+  .high-contrast .accessibility-commitment .border-primary-foreground\/20 {
+    border-color: hsl(var(--border)) !important;
+  }
+
+  .high-contrast .accessibility-commitment .text-primary-foreground,
+  .high-contrast .accessibility-commitment .text-primary-foreground\/90,
+  .high-contrast .accessibility-commitment .text-primary-foreground\/80 {
+    color: hsl(var(--foreground)) !important;
+  }
+
+  .high-contrast .accessibility-commitment kbd {
+    background-color: hsl(var(--foreground)) !important;
+    color: hsl(var(--background)) !important;
+    border-color: hsl(var(--foreground)) !important;
+  }
+
   .high-contrast button,
   .high-contrast [role='button'] {
     opacity: 1 !important;
