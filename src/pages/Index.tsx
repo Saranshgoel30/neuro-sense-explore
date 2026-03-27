@@ -48,8 +48,12 @@ const Index = () => {
   return (
     <Layout>
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-hero py-24 text-primary-foreground" role="banner">
-        <div className="container mx-auto px-4 text-center">
+      <section className="relative overflow-hidden bg-gradient-hero py-20 md:py-24 text-primary-foreground" role="banner">
+        <div className="pointer-events-none absolute inset-0 opacity-20" aria-hidden="true">
+          <div className="absolute -top-20 -left-20 h-72 w-72 rounded-full bg-white/30 blur-3xl" />
+          <div className="absolute -bottom-24 -right-16 h-80 w-80 rounded-full bg-accent/40 blur-3xl" />
+        </div>
+        <div className="container mx-auto px-4 md:px-6 text-center">
           <div>
             <div className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/30 bg-primary-foreground/10 px-4 py-2 mb-6 text-sm">
               <Sparkles className="h-4 w-4" aria-hidden="true" />
@@ -116,19 +120,19 @@ const Index = () => {
       </section>
 
       {/* Key Stats */}
-      <section className="py-16 bg-muted" aria-labelledby="stats-heading">
-        <div className="container mx-auto px-4">
+      <section className="section-regular bg-muted" aria-labelledby="stats-heading">
+        <div className="container mx-auto px-4 md:px-6">
           <h2 id="stats-heading" className="sr-only">Platform Statistics</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-            <div>
+            <div className="rounded-xl border bg-card p-6 shadow-soft">
               <div className="text-3xl font-bold text-primary mb-2">100%</div>
               <p className="text-muted-foreground">Keyboard Navigable</p>
             </div>
-            <div>
+            <div className="rounded-xl border bg-card p-6 shadow-soft">
               <div className="text-3xl font-bold text-primary mb-2">Audio-First</div>
               <p className="text-muted-foreground">Design Approach</p>
             </div>
-            <div>
+            <div className="rounded-xl border bg-card p-6 shadow-soft">
               <div className="text-3xl font-bold text-primary mb-2">Multi-Modal</div>
               <p className="text-muted-foreground">Learning Experience</p>
             </div>
@@ -137,8 +141,8 @@ const Index = () => {
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-20" aria-labelledby="features-heading">
-        <div className="container mx-auto px-4">
+      <section id="features" className="section-spacious" aria-labelledby="features-heading">
+        <div className="container mx-auto px-4 md:px-6">
           <div className="text-center mb-16">
             <h2 
               id="features-heading" 
@@ -161,7 +165,7 @@ const Index = () => {
                 className="card-modern transition-all duration-200 hover:-translate-y-1 hover:shadow-medium border-2" 
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
-                <CardHeader>
+                <CardHeader className="pb-3">
                   <CardTitle className="text-2xl flex items-center gap-2">
                     <feature.icon className="h-6 w-6 text-primary" aria-hidden="true" />
                     {feature.title}
@@ -171,7 +175,7 @@ const Index = () => {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="bg-muted/50 p-4 rounded-lg mb-4">
+                  <div className="bg-muted/50 p-4 rounded-lg mb-4 border">
                     <p className="text-sm text-muted-foreground italic">
                       Example: {feature.example}
                     </p>
@@ -197,31 +201,31 @@ const Index = () => {
       </section>
 
       {/* Accessibility Commitment */}
-      <section className="py-16 bg-primary text-primary-foreground" aria-labelledby="accessibility-heading">
-        <div className="container mx-auto px-4 text-center">
+      <section className="section-regular bg-primary text-primary-foreground accessibility-commitment" aria-labelledby="accessibility-heading">
+        <div className="container mx-auto px-4 md:px-6 text-center">
           <h2 id="accessibility-heading" className="text-3xl font-bold mb-6">
             Built for Universal Access
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <div className="flex flex-col items-center">
+            <div className="rounded-xl border border-primary-foreground/20 bg-primary-foreground/10 p-4 flex flex-col items-center">
               <h3 className="font-semibold mb-2">Screen Reader Support</h3>
               <p className="text-primary-foreground/90 text-sm">
                 Full compatibility with all major screen readers
               </p>
             </div>
-            <div className="flex flex-col items-center">
+            <div className="rounded-xl border border-primary-foreground/20 bg-primary-foreground/10 p-4 flex flex-col items-center">
               <h3 className="font-semibold mb-2">Audio Descriptions</h3>
               <p className="text-primary-foreground/90 text-sm">
                 Rich audio content for all visual elements
               </p>
             </div>
-            <div className="flex flex-col items-center">
+            <div className="rounded-xl border border-primary-foreground/20 bg-primary-foreground/10 p-4 flex flex-col items-center">
               <h3 className="font-semibold mb-2">Haptic Feedback</h3>
               <p className="text-primary-foreground/90 text-sm">
                 Device vibrations for enhanced interaction
               </p>
             </div>
-            <div className="flex flex-col items-center">
+            <div className="rounded-xl border border-primary-foreground/20 bg-primary-foreground/10 p-4 flex flex-col items-center">
               <h3 className="font-semibold mb-2">High Contrast</h3>
               <p className="text-primary-foreground/90 text-sm">
                 Toggle mode for enhanced visibility

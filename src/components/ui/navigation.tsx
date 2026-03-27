@@ -32,15 +32,15 @@ const Navigation = () => {
   return (
     <nav 
       id="main-navigation"
-      className="bg-card border-b shadow-soft"
+      className="sticky top-0 z-40 border-b bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80 shadow-soft"
       aria-label="Main navigation"
     >
-      <div className="container mx-auto px-4">
-        <div className="flex flex-col gap-3 py-3">
+      <div className="container mx-auto px-4 md:px-6">
+        <div className="flex flex-col gap-3 py-2.5 md:py-3">
           <div className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-2">
               <BrainCircuit className="h-5 w-5 text-primary" aria-hidden="true" />
-              <p className="text-sm md:text-base font-semibold text-foreground">Neuro Sense Explore</p>
+              <p className="text-sm md:text-base font-semibold tracking-wide text-foreground">Neuro Sense Explore</p>
             </div>
             <Button
               variant="outline"
@@ -71,7 +71,7 @@ const Navigation = () => {
                     asChild
                     variant={isActive ? "default" : "ghost"}
                     size="sm"
-                    className="flex items-center gap-2"
+                    className="flex items-center gap-2 rounded-full px-4"
                   >
                     <Link
                       to={item.href}

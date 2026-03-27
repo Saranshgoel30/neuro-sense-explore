@@ -54,8 +54,8 @@ const Maps = () => {
   return (
     <Layout>
       {/* Header */}
-      <section className="py-16 bg-gradient-primary text-primary-foreground">
-        <div className="container mx-auto px-4">
+      <section className="section-regular bg-gradient-primary text-primary-foreground">
+        <div className="container mx-auto px-4 md:px-6">
           <div className="text-center">
             <div className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/30 bg-primary-foreground/10 px-4 py-2 mb-6 text-sm">
               <Compass className="h-4 w-4" aria-hidden="true" />
@@ -77,34 +77,34 @@ const Maps = () => {
       </section>
 
       {/* Navigation Instructions */}
-      <section className="py-8 bg-muted" aria-labelledby="navigation-heading">
-        <div className="container mx-auto px-4">
+      <section className="section-compact bg-muted" aria-labelledby="navigation-heading">
+        <div className="container mx-auto px-4 md:px-6">
           <h2 id="navigation-heading" className="text-2xl font-bold mb-6">
             Navigation Controls
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-3 rounded-xl border bg-card p-4 shadow-soft">
               <div className="bg-primary text-primary-foreground p-2 rounded font-semibold">↑</div>
               <div>
                 <h3 className="font-semibold">↑ Arrow Key</h3>
                 <p className="text-sm text-muted-foreground">Move to upper brain region</p>
               </div>
             </div>
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-3 rounded-xl border bg-card p-4 shadow-soft">
               <div className="bg-primary text-primary-foreground p-2 rounded font-semibold">↓</div>
               <div>
                 <h3 className="font-semibold">↓ Arrow Key</h3>
                 <p className="text-sm text-muted-foreground">Move to lower brain region</p>
               </div>
             </div>
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-3 rounded-xl border bg-card p-4 shadow-soft">
               <div className="bg-primary text-primary-foreground p-2 rounded font-semibold">←</div>
               <div>
                 <h3 className="font-semibold">← Arrow Key</h3>
                 <p className="text-sm text-muted-foreground">Move to left hemisphere</p>
               </div>
             </div>
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-3 rounded-xl border bg-card p-4 shadow-soft">
               <div className="bg-primary text-primary-foreground p-2 rounded font-semibold">→</div>
               <div>
                 <h3 className="font-semibold">→ Arrow Key</h3>
@@ -116,8 +116,8 @@ const Maps = () => {
       </section>
 
       {/* Available Maps */}
-      <section className="py-16" aria-labelledby="maps-heading">
-        <div className="container mx-auto px-4">
+      <section className="section-regular" aria-labelledby="maps-heading">
+        <div className="container mx-auto px-4 md:px-6">
           <h2 id="maps-heading" className="text-3xl font-bold mb-8 text-center">
             Available Brain Maps
           </h2>
@@ -189,8 +189,8 @@ const Maps = () => {
 
       {/* Interactive Map Viewer */}
       {selectedMap && (
-        <section className="py-16 bg-card border-t" aria-labelledby="viewer-heading">
-          <div className="container mx-auto px-4">
+        <section className="section-regular bg-card border-t" aria-labelledby="viewer-heading">
+          <div className="container mx-auto px-4 md:px-6">
             <h2 id="viewer-heading" className="text-2xl font-bold mb-8 text-center">
               Interactive Map Viewer
             </h2>
@@ -200,7 +200,7 @@ const Maps = () => {
 
               return (
                 <div className="max-w-4xl mx-auto">
-                  <div className="bg-muted p-6 rounded-lg">
+                  <div className="bg-muted p-6 rounded-xl border shadow-soft">
                     <h3 className="text-xl font-bold mb-4 text-center">
                       {currentMap.title}
                     </h3>
@@ -225,7 +225,7 @@ const Maps = () => {
                     </div>
 
                     {/* Current Selection Info */}
-                    <div className="bg-background p-4 rounded-lg">
+                    <div className="bg-background p-4 rounded-lg border">
                       <h4 className="font-semibold mb-2">Current Selection:</h4>
                       {selectedRegion ? (
                         <div className="space-y-2">
@@ -248,7 +248,7 @@ const Maps = () => {
                     </div>
 
                     {/* Navigation Help */}
-                    <div className="mt-6 p-4 bg-primary/10 rounded-lg">
+                    <div className="mt-6 p-4 bg-primary/10 rounded-lg border border-primary/20">
                       <h4 className="font-semibold mb-2">Navigation Tips:</h4>
                       <ul className="text-sm space-y-1">
                         <li>• Use Tab to navigate between regions</li>
@@ -266,8 +266,8 @@ const Maps = () => {
       )}
 
       {/* Sonification Info */}
-      <section className="py-12 bg-muted" aria-labelledby="sonification-heading">
-        <div className="container mx-auto px-4">
+      <section className="section-regular bg-muted" aria-labelledby="sonification-heading">
+        <div className="container mx-auto px-4 md:px-6">
           <h2 id="sonification-heading" className="text-2xl font-bold mb-6 text-center">
             Understanding Sonification
           </h2>
