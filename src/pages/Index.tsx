@@ -56,13 +56,13 @@ const Index = () => {
               Designed for accessible learning
             </div>
             <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-              Neuro Sense Explore
+              NewroView
               <span className="block text-2xl md:text-3xl font-normal mt-2 text-primary-foreground/90">
                 Accessible Neuroscience Education
               </span>
             </h1>
             <p className="text-xl md:text-2xl text-primary-foreground/90 mb-8 max-w-3xl mx-auto leading-relaxed">
-              A multilingual, digitally accessible platform for neuroscience education 
+              A multilingual, digitally accessible platform for neuroscience education
               tailored specifically for blind and low-vision learners
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -85,9 +85,9 @@ const Index = () => {
               <span id="start-learning-desc" className="sr-only">
                 Navigate to audio lessons page with podcast-style neuroscience modules
               </span>
-              <Button 
-                size="lg" 
-                variant="outline" 
+              <Button
+                size="lg"
+                variant="outline"
                 className="text-lg px-8 py-4 bg-primary-foreground/10 border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary"
                 onClick={() => {
                   triggerHapticFeedback('medium');
@@ -140,8 +140,8 @@ const Index = () => {
       <section id="features" className="py-20" aria-labelledby="features-heading">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 
-              id="features-heading" 
+            <h2
+              id="features-heading"
               className="text-4xl font-bold mb-4"
               tabIndex={-1}
               aria-describedby="features-description"
@@ -149,16 +149,16 @@ const Index = () => {
               Inclusive Learning Features
             </h2>
             <p id="features-description" className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Experience neuroscience through multiple senses with our comprehensive 
+              Experience neuroscience through multiple senses with our comprehensive
               accessibility-first approach
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {features.map((feature, index) => (
-              <Card 
-                key={feature.title} 
-                className="card-modern transition-all duration-200 hover:-translate-y-1 hover:shadow-medium border-2" 
+              <Card
+                key={feature.title}
+                className="card-modern transition-all duration-200 hover:-translate-y-1 hover:shadow-medium border-2"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 <CardHeader>
@@ -229,7 +229,7 @@ const Index = () => {
             </div>
           </div>
           <p className="text-lg text-primary-foreground/90">
-            Press <kbd className="bg-primary-foreground/20 px-2 py-1 rounded text-sm">Ctrl+Alt+C</kbd> 
+            Press <kbd className="bg-primary-foreground/20 px-2 py-1 rounded text-sm">Ctrl+Alt+C</kbd>
             {" "}to toggle high contrast mode
           </p>
         </div>
