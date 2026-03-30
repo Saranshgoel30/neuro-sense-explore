@@ -48,7 +48,7 @@ const Layout = ({ children }: LayoutProps) => {
             />
           </div>
           <p className="text-muted-foreground">
-            Neuro Sense Explore - Making neuroscience accessible for everyone
+            NewroView - Making neuroscience accessible for everyone
           </p>
           <p className="text-sm text-muted-foreground mt-2">
             WCAG 2.1 AA Compliant | Keyboard navigable | Screen reader optimized

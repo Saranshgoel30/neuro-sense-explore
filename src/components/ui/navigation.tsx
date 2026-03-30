@@ -40,7 +40,7 @@ const Navigation = () => {
           <div className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-2">
               <BrainCircuit className="h-5 w-5 text-primary" aria-hidden="true" />
-              <p className="text-sm md:text-base font-semibold text-foreground">Neuro Sense Explore</p>
+              <p className="text-sm md:text-base font-semibold text-foreground">NewroView</p>
             </div>
             <Button
               variant="outline"
