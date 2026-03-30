@@ -1,4 +1,4 @@
-# Neuro Sense Explore
+# NewroView
 
 Accessible neuroscience learning platform focused on blind and low-vision students.
 
